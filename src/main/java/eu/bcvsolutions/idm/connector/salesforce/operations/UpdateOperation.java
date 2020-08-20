@@ -45,8 +45,8 @@ public class UpdateOperation {
 		if (!authorization.isAlive()) {
 			authorization.authorize();
 		}
-		response = connection.post(configuration.getUrl() + updateUser + id, userBody, authorization);
-		if (response.getStatus() != HttpStatus.SC_OK) {
+		response = connection.patch(configuration.getUrl() + updateUser + id, userBody, authorization);
+		if (response.getStatus() != HttpStatus.SC_NO_CONTENT) {
 			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody().toPrettyString());
 		}
 	}

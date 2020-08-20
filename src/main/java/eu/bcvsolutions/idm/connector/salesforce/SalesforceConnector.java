@@ -23,6 +23,7 @@ import org.identityconnectors.framework.common.objects.filter.FilterTranslator;
 import org.identityconnectors.framework.spi.Configuration;
 import org.identityconnectors.framework.spi.Connector;
 import org.identityconnectors.framework.spi.ConnectorClass;
+import org.identityconnectors.framework.spi.PoolableConnector;
 import org.identityconnectors.framework.spi.operations.CreateOp;
 import org.identityconnectors.framework.spi.operations.DeleteOp;
 import org.identityconnectors.framework.spi.operations.SchemaOp;
@@ -49,7 +50,7 @@ import kong.unirest.Unirest;
  */
 @ConnectorClass(configurationClass = SalesforceConfiguration.class, displayNameKey = "salesforce.display")
 public class SalesforceConnector implements Connector, CreateOp, UpdateOp, DeleteOp,
-		SchemaOp, TestOp, SearchOp<String> {
+		SchemaOp, TestOp, SearchOp<String>, PoolableConnector {
 
 	private static final Log LOG = Log.getLog(SalesforceConnector.class);
 
@@ -234,11 +235,9 @@ public class SalesforceConnector implements Connector, CreateOp, UpdateOp, Delet
 				user.forEach((key, value) -> {
 					if (key.equals("Id")) {
 						builder.setUid(String.valueOf(value));
-						return;
 					}
 					if (key.equals("Username")) {
 						builder.setName(String.valueOf(value));
-						return;
 					}
 					builder.addAttribute(AttributeBuilder.build(key, value));
 				});
@@ -253,6 +252,13 @@ public class SalesforceConnector implements Connector, CreateOp, UpdateOp, Delet
 				builder.setObjectClass(objectClass);
 				handler.handle(builder.build());
 			});
+		}
+	}
+
+	@Override
+	public void checkAlive() {
+		if(!authorization.isAlive()) {
+			authorization.authorize();
 		}
 	}
 }
