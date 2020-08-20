@@ -53,7 +53,8 @@ public class Connection {
 	public HttpResponse<JsonNode> postAuth(String url, Object body) {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> formData = mapper.convertValue(body, new TypeReference<HashMap<String, Object>>() {});
+			Map<String, Object> formData = mapper.convertValue(body, new TypeReference<HashMap<String, Object>>() {
+			});
 
 			return Unirest.post(url)
 					.fields(formData)
@@ -83,16 +84,17 @@ public class Connection {
 	}
 
 	/**
-	 * Wrapped method for PUT call to end system
+	 * Wrapped method for PATCH call to end system
 	 *
 	 * @param url
 	 * @param body
 	 * @return
 	 */
-	public HttpResponse<JsonNode> put(String url, Object body) {
+	public HttpResponse<JsonNode> patch(String url, Map<String, Object>  body, Authorization authorization) {
 		try {
-			return Unirest.put(url)
-					.header("content-type", "application/json")
+			return Unirest.patch(url)
+					.header(HttpHeaders.AUTHORIZATION, "Bearer " + authorization.getAuthorizationResponse().getAccessToken())
+					.header(HttpHeaders.CONTENT_TYPE, "application/json")
 					.body(body)
 					.asJson();
 		} catch (UnirestException e) {

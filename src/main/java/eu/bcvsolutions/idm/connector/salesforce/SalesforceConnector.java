@@ -1,10 +1,8 @@
 package eu.bcvsolutions.idm.connector.salesforce;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.identityconnectors.common.logging.Log;
 import org.identityconnectors.framework.common.exceptions.ConnectorException;
@@ -40,6 +38,7 @@ import eu.bcvsolutions.idm.connector.salesforce.model.UserResponse;
 import eu.bcvsolutions.idm.connector.salesforce.operations.Authorization;
 import eu.bcvsolutions.idm.connector.salesforce.operations.CreateOperation;
 import eu.bcvsolutions.idm.connector.salesforce.operations.SearchOperation;
+import eu.bcvsolutions.idm.connector.salesforce.operations.UpdateOperation;
 import kong.unirest.ObjectMapper;
 import kong.unirest.Unirest;
 
@@ -108,12 +107,16 @@ public class SalesforceConnector implements Connector, CreateOp, UpdateOp, Delet
 			final Set<Attribute> createAttributes,
 			final OperationOptions options) {
 
-		CreateOperation createOperation = new CreateOperation(configuration, connection, authorization);
-		CreateResponse user = createOperation.createUser(createAttributes);
-		if (user.isSuccess()) {
-			return new Uid(user.getId());
+		if (objectClass.is(ObjectClass.ACCOUNT_NAME)) {
+			CreateOperation createOperation = new CreateOperation(configuration, connection, authorization);
+			CreateResponse user = createOperation.createUser(createAttributes);
+			if (user.isSuccess()) {
+				return new Uid(user.getId());
+			}
+			throw new ConnectorException("Error during creation" + user.getErrors());
+		} else {
+			throw new ConnectorException("Only __ACCOUNT__ object is supported");
 		}
-		throw new ConnectorException("Error during creation" + user.getErrors());
 	}
 
 	@Override
@@ -123,7 +126,14 @@ public class SalesforceConnector implements Connector, CreateOp, UpdateOp, Delet
 			final Set<Attribute> replaceAttributes,
 			final OperationOptions options) {
 
-		return uid;
+		if (objectClass.is(ObjectClass.ACCOUNT_NAME)) {
+			UpdateOperation updateOperation = new UpdateOperation(configuration, connection, authorization);
+			updateOperation.updateUser(replaceAttributes, uid.getUidValue());
+
+			return uid;
+		} else {
+			throw new ConnectorException("Only __ACCOUNT__ object is supported");
+		}
 	}
 
 	@Override
@@ -131,6 +141,7 @@ public class SalesforceConnector implements Connector, CreateOp, UpdateOp, Delet
 			final ObjectClass objectClass,
 			final Uid uid,
 			final OperationOptions options) {
+		throw new ConnectorException("Delete not supported");
 	}
 
 	@Override
