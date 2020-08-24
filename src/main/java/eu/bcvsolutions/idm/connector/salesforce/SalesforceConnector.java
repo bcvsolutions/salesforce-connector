@@ -183,6 +183,7 @@ public class SalesforceConnector implements Connector, CreateOp, UpdateOp, Delet
 		accountObjectClassBuilder.addAttributeInfo(AttributeInfoBuilder.build("LocaleSidKey", String.class));
 		accountObjectClassBuilder.addAttributeInfo(AttributeInfoBuilder.build("ProfileId", String.class));
 		accountObjectClassBuilder.addAttributeInfo(AttributeInfoBuilder.build("TimeZoneSidKey", String.class));
+		accountObjectClassBuilder.addAttributeInfo(AttributeInfoBuilder.build("IsActive", Boolean.class));
 
 		SchemaBuilder schemaBuilder = new SchemaBuilder(SalesforceConnector.class);
 		schemaBuilder.defineObjectClass(accountObjectClassBuilder.build());
