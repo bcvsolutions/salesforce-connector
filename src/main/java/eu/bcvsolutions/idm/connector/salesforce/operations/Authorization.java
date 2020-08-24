@@ -59,6 +59,9 @@ public class Authorization {
 	}
 
 	public boolean isAlive() {
+		if (configuration.getNewTokenBeforeRequest() != null && configuration.getNewTokenBeforeRequest()) {
+			return false;
+		}
 		if (authorizationResponse == null) {
 			return false;
 		}

@@ -17,6 +17,7 @@ public class SalesforceConfiguration extends AbstractConfiguration {
     private GuardedString password;
     private GuardedString token;
     private int validity;
+    private Boolean newTokenBeforeRequest;
 
     @ConfigurationProperty(displayMessageKey = "salesforce.url.display",
             helpMessageKey = "salesforce.url.help", order = 1, required = true)
@@ -106,6 +107,16 @@ public class SalesforceConfiguration extends AbstractConfiguration {
 
     public void setValidity(int validity) {
         this.validity = validity;
+    }
+
+    @ConfigurationProperty(displayMessageKey = "salesforce.new.token.display",
+            helpMessageKey = "salesforce.new.token.help", order = 10)
+    public Boolean getNewTokenBeforeRequest() {
+        return newTokenBeforeRequest;
+    }
+
+    public void setNewTokenBeforeRequest(Boolean newTokenBeforeRequest) {
+        this.newTokenBeforeRequest = newTokenBeforeRequest;
     }
 
     @Override
