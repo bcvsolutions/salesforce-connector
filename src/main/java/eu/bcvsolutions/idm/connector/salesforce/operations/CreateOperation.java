@@ -47,7 +47,7 @@ public class CreateOperation {
 		});
 
 		ObjectMapper jsonObjectMapper = new ObjectMapper();
-		HttpResponse<JsonNode> response = null;
+		HttpResponse<JsonNode> response;
 		try {
 			if (!authorization.isAlive()) {
 				authorization.authorize();
@@ -58,7 +58,7 @@ public class CreateOperation {
 			}
 			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody().toPrettyString());
 		} catch (JsonProcessingException e) {
-			throw  new ConnectorException("", e);
+			throw  new ConnectorException("Can't parse json", e);
 		}
 	}
 }

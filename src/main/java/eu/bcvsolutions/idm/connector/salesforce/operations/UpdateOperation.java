@@ -41,7 +41,7 @@ public class UpdateOperation {
 			// TODO multivalued?
 		});
 
-		HttpResponse<JsonNode> response = null;
+		HttpResponse<JsonNode> response;
 		if (!authorization.isAlive()) {
 			authorization.authorize();
 		}

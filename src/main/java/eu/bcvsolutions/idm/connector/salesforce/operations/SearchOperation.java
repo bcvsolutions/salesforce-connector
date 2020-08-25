@@ -40,7 +40,7 @@ public class SearchOperation {
 
 	public UserResponse getUsers() {
 		ObjectMapper jsonObjectMapper = new ObjectMapper();
-		HttpResponse<JsonNode> response = null;
+		HttpResponse<JsonNode> response;
 		try {
 			// TODO check pagable?
 			if (!authorization.isAlive()) {
@@ -52,13 +52,13 @@ public class SearchOperation {
 			}
 			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody().toPrettyString());
 		} catch (JsonProcessingException e) {
-			throw new ConnectorException("", e);
+			throw new ConnectorException("Can't parse json", e);
 		}
 	}
 
 	public Map<String, Object> getUser(String id) {
 		ObjectMapper jsonObjectMapper = new ObjectMapper();
-		HttpResponse<JsonNode> response = null;
+		HttpResponse<JsonNode> response;
 		try {
 			if (!authorization.isAlive()) {
 				authorization.authorize();
@@ -73,7 +73,7 @@ public class SearchOperation {
 			}
 			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody().toPrettyString());
 		} catch (JsonProcessingException e) {
-			throw new ConnectorException("", e);
+			throw new ConnectorException("Can't parse json", e);
 		}
 	}
 }

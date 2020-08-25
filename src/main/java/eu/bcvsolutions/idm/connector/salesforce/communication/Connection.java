@@ -102,22 +102,6 @@ public class Connection {
 		}
 	}
 
-	/**
-	 * Wrapped method for DELETE call to end system
-	 *
-	 * @param url
-	 * @return
-	 */
-	public HttpResponse<JsonNode> delete(String url) {
-		try {
-			return Unirest.delete(url)
-					.header("content-type", "application/json")
-					.asJson();
-		} catch (UnirestException e) {
-			throw new ConnectionFailedException("Connection failed", e);
-		}
-	}
-
 	public ConnectorException handleAuthError(HttpResponse<JsonNode> response, String operation, ConnectionFailedException e) {
 		if (response != null) {
 			try {
