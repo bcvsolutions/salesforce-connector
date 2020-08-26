@@ -50,7 +50,7 @@ public class SearchOperation {
 			if (response.getStatus() == HttpStatus.SC_OK) {
 				return jsonObjectMapper.readValue(response.getBody().toString(), UserResponse.class);
 			}
-			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody().toPrettyString());
+			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody());
 		} catch (JsonProcessingException e) {
 			throw new ConnectorException("Can't parse json", e);
 		}
@@ -71,7 +71,7 @@ public class SearchOperation {
 				LOG.info("User not found");
 				return new HashMap<>();
 			}
-			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody().toPrettyString());
+			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody());
 		} catch (JsonProcessingException e) {
 			throw new ConnectorException("Can't parse json", e);
 		}

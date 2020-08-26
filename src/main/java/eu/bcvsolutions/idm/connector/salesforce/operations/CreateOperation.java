@@ -56,7 +56,7 @@ public class CreateOperation {
 			if (response.getStatus() == HttpStatus.SC_OK || response.getStatus() == HttpStatus.SC_CREATED) {
 				return jsonObjectMapper.readValue(response.getBody().toString(), CreateResponse.class);
 			}
-			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody().toPrettyString());
+			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody());
 		} catch (JsonProcessingException e) {
 			throw  new ConnectorException("Can't parse json", e);
 		}

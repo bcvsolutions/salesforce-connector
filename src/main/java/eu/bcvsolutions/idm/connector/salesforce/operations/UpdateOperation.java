@@ -47,7 +47,7 @@ public class UpdateOperation {
 		}
 		response = connection.patch(configuration.getUrl() + updateUser + id, userBody, authorization);
 		if (response.getStatus() != HttpStatus.SC_NO_CONTENT) {
-			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody().toPrettyString());
+			throw new ConnectionFailedException("Can't connect to system, return code " + response.getStatus() + " body: " + response.getBody());
 		}
 	}
 }
