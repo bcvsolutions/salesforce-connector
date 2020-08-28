@@ -71,7 +71,7 @@ public class Authorization {
 		Instant instant = Instant.ofEpochMilli(Long.parseLong(authorizationResponse.getIssuedAt()));
 		LocalDateTime issuedAt = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
 
-		return !issuedAt.plusMinutes(configuration.getValidity()).isAfter(LocalDateTime.now());
+		return issuedAt.plusMinutes(configuration.getValidity()).isAfter(LocalDateTime.now(ZoneOffset.UTC));
 	}
 
 	/**

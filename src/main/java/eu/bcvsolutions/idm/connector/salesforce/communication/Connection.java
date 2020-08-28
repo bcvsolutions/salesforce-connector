@@ -90,7 +90,7 @@ public class Connection {
 	 * @param body
 	 * @return
 	 */
-	public HttpResponse<JsonNode> patch(String url, Map<String, Object>  body, Authorization authorization) {
+	public HttpResponse<JsonNode> patch(String url, Map<String, Object> body, Authorization authorization) {
 		try {
 			return Unirest.patch(url)
 					.header(HttpHeaders.AUTHORIZATION, "Bearer " + authorization.getAuthorizationResponse().getAccessToken())
@@ -118,5 +118,12 @@ public class Connection {
 			LOG.error("Response is null can't parse error message for operation {0}", operation);
 			return new ConnectorException(e);
 		}
+	}
+
+	public String handleError(HttpResponse<JsonNode> response) {
+		if (response.getParsingError().isPresent()) {
+			return response.getParsingError().get().getOriginalBody();
+		}
+		return "";
 	}
 }
