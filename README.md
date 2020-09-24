@@ -2,7 +2,7 @@
 
 It's build on top of ConnId framework. Supported versions of framework is 1.4.3.0
 
-For usage example with CzechIdM you can follow article in Czech TODO
+For usage example with CzechIdM you can follow tutorial https://wiki.czechidm.com/tutorial/adm/manage_salesforce
 
 This connector allows you to manage users.  
 Supported operations are:
